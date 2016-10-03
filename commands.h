@@ -1,0 +1,11 @@
+#define GET_BAUDRATE	'b'
+#define READ_ENCODERS	'e'
+#define MOTOR_SPEEDS	'm'
+#define RESET_ENCODERS	'r'
+#define UPDATE_PID	'u'
+#define READ_PINOUT	'F'
+#define READ_PIDIN  	'i'
+#define LEFT             0
+#define RIGHT            1
+#define FORWARDS 	true
+#define BACKWARDS 	false
