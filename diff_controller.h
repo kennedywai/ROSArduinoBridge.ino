@@ -62,7 +62,8 @@ void updatePID() {
   rightPID.Encoder = readEncoder(RIGHT);
   
   if (!moving){
-    if (leftPID.PrevInput != 0 || rightPID.PrevInput != 0) resetPID();
+    if (leftPID.PrevInput != 0 || rightPID.PrevInput != 0) 
+    resetPID();
     return;
   }
   doPID(&rightPID);
@@ -70,6 +71,9 @@ void updatePID() {
   setMotorSpeeds(leftPID.output, rightPID.output);
 }
 
+// Reading PID input and output
+// READ_PIDOUT 读取PID计算的PWM值，为后续调整PID参数提供参考
+// READ_PIDIN 读取一个PID周期内编码器的计数，为后续调整PID参数提供参考
 long readPidIn(int i) {
   long pidin=0;
     if (i == LEFT){
