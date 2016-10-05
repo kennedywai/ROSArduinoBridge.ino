@@ -38,7 +38,7 @@ void initMotorController() {
   pinMode(in2, OUTPUT);
   pinMode(in3, OUTPUT);
   pinMode(in4, OUTPUT);
-  }
+}
 
 void setMotorSpeed(int i, int spd){
     if(spd>MAX_PWM){

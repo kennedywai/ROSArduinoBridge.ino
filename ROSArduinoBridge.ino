@@ -5,6 +5,7 @@
 
 #include "Arduino.h"
 #include "commands.h"
+#include "motor_driver.h"
 #include "encoder_driver.h"
 #include "diff_controller.h"
 
@@ -26,7 +27,7 @@ long arg2;
 
 void resetCommand() {
   cmd = NULL;
-  memset(argv1, 0, sizeof(argv1));
+  memset(argv1, 0, sizeof(argv1));// fastest way to initializing an array
   memset(argv2, 0, sizeof(argv2));
   arg1 = 0;
   arg2 = 0;
@@ -105,7 +106,7 @@ void setup() {
   Serial.begin(BAUDRATE);
   initEncoders();
   initMotorController();
-  resetPID();
+  resetPID(); // "initializing" PID
 }
 
 void loop() {

@@ -2,6 +2,15 @@
 #include "motor_driver.h"
 #include "encoder_driver.h"
 
+/*
+PID的目的是通过改变电机PWM值，使电机实际的转速基本等于期望的转速。如果参数不合理，就会出现实际的转速和期望的转速相差很远。
+也就是说，我们没办法精准控制小车。
+
+调PID参数，就是把电机PWM值、期望的转速和实际的转速这三者的值用图表实时地描绘出来， 
+根据PWM值和实际的转速的运动轨迹，不停地修改PID的参数，
+让期望的转速和实际的转速能在很短时间内的达到一致。
+调节顺序，先调P,再调I，最后调D，通常只需要P和I两个参数就可以了。
+*/
 typedef struct {
   double TargetTicksPerFrame;     // target speed in ticks per frame
   long   Encoder;                 // encoder count
@@ -9,9 +18,8 @@ typedef struct {
   int    PrevInput;               // last input
   int    ITerm;                   // integrated term
   long   output;                  // last motor setting
-}
+}SetPointInfo;
 
-SetPointInfo;
 SetPointInfo leftPID, rightPID;
 
 int Kp = 20;
@@ -23,8 +31,8 @@ unsigned char moving = 0; // is the base in motion?
 
 void resetPID(){
    leftPID.TargetTicksPerFrame = 0.0;
-   leftPID.Encoder = readEncoder(LEFT);
-   leftPID.PrevEnc = leftPID.Encoder;
+   leftPID.Encoder = readEncoder(LEFT);// present encoder value
+   leftPID.PrevEnc = leftPID.Encoder;// previous encoder value
    leftPID.output = 0;
    leftPID.PrevInput = 0;
    leftPID.ITerm = 0;
