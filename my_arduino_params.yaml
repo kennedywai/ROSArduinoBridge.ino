@@ -11,8 +11,8 @@ base_controller_rate: 10
 base_frame: base_link
 
 # === Robot drivetrain parameters
-wheel_diameter: 0.15
-wheel_track: 0.287
+wheel_diameter: 0.065
+wheel_track: 0.182
 encoder_resolution: 1768 # how many pulses generated
 gear_reduction: 1.0
 motors_reversed: False
