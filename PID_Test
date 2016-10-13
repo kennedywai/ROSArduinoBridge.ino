@@ -20,6 +20,9 @@
 
 2) base_controller.py
 
+from std_msgs.msg import Int32
+
+
 self.odomPub = rospy.Publisher(‘odom’, Odometry) 上面添加如下内容
 
     self.lEncoderPub = rospy.Publisher('Lencoder', Int32)
