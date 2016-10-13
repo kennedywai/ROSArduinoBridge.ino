@@ -8,7 +8,15 @@
 #include "motor_driver.h"
 #include "encoder_driver.h"
 #include "diff_controller.h"
-
+/*
+The main loop in motor_controller.ino converts encoder tick counts into the current rpm of both motors and controls 
+the speed of the motors using PID control. The rosserial library conveniently allows the program to communicate with 
+the rest of the ros nodes in the pc via usb. The program subscribes to the cmd_vel topic which sets the desired speed of 
+the motors, and publishes the actual speeds on the rpm topic. I used two interrupt pins in the mega, one for each encoder. 
+The PID control and rpm publishing are all done in the same loop cycle, at a desired rate of 10Hz (every 100 ms). 
+I modifed the Adafruit motorshield v2 library such that setSpeed for DC motors used the full 4096 PWM resolution, 
+i.e. in Adafruit_MotorShield.cpp
+*/
 const int PID_INTERVAL = 1000 / PID_RATE;
 unsigned long nextPID = PID_INTERVAL;
 
