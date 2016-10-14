@@ -118,6 +118,11 @@ void setup() {
 }
 
 void loop() {
+  Serial.print("Left Count:");
+  Serial.println(left_enc_pos);
+  Serial.print("Right Count:");
+  Serial.println(right_enc_pos);
+  delay(1000);
   while (Serial.available() > 0) {
     chr = Serial.read();
     if (chr == 13) {

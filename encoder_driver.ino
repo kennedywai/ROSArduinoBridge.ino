@@ -1,10 +1,10 @@
 #include "motor_driver.h"
 #include "commands.h";
 //Left Encoder
-int encoderL_A = 2;//interrupt pin for right motor a
+int encoderL_A = 2;//interrupt pin for left motor a
 int encoderL_B = 4;//not using an interrupt pin for left motor B
 //Right Encoder
-int encoderR_A = 3;//interrupt pin for left motor a
+int encoderR_A = 3;//interrupt pin for right motor a
 int encoderR_B = 5;//not using an interrupt pin for right motor B
 
 // variables to store the number of encoder pulses
