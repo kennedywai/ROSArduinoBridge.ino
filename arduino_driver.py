@@ -44,7 +44,7 @@ class Arduino:
     N_ANALOG_PORTS = 6
     N_DIGITAL_PORTS = 12
     
-    def __init__(self, port="/dev/ttyUSB0", baudrate=115200, timeout=0.5):
+    def __init__(self, port="/dev/ttyACM0", baudrate=115200, timeout=0.5):
         
         self.PID_RATE = 30 # Do not change this!  It is a fixed property of the Arduino PID controller.
         self.PID_INTERVAL = 1000 / 30
@@ -272,7 +272,7 @@ class Arduino:
     def get_encoder_counts(self):
         values = self.execute_array('e')
         if len(values) != 2:
-            print "Encoder count was not 2"
+            print "Encoder count was not 2"	
             raise SerialException
             return None
         else:
@@ -388,7 +388,7 @@ if __name__ == "__main__":
     print "Reading on digital port 0", myArduino.digital_read(0)
     print "Blinking the LED 3 times"
     for i in range(3):
-        myArduino.digital_write(13, 1)
+        myArduino.digital_write(12, 1)
         time.sleep(1.0)
     #print "Current encoder counts", myArduino.encoders()
     

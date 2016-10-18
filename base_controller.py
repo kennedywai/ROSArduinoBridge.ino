@@ -20,6 +20,7 @@
     
     http://www.gnu.org/licenses
 """
+#roslib.load_manifest() reads the package manifest and sets up the python library path based on the package dependencies. It's required for older rosbuild-based packages, but is no longer needed on catkin.
 import roslib; roslib.load_manifest('ros_arduino_python')
 import rospy
 import os
@@ -33,7 +34,7 @@ from tf.broadcaster import TransformBroadcaster
 """ Class to receive Twist commands and publish Odometry data """
 class BaseController:
     def __init__(self, arduino, base_frame, name="base_controllers"):
-        """
+        
         # Rember to declare the Int32 message data type
         self.lEncoderPub = rospy.Publisher('Lencoder', Int32)
         self.rEncoderPub = rospy.Publisher('Rencoder', Int32)
@@ -41,7 +42,7 @@ class BaseController:
         self.rPidoutPub = rospy.Publisher('Rpidout', Int32)
         self.lVelPub = rospy.Publisher('Lvel', Int32)
         self.rVelPub = rospy.Publisher('Rvel', Int32)
-        """
+        
         self.arduino = arduino
         self.name = name
         self.base_frame = base_frame
@@ -139,6 +140,7 @@ class BaseController:
         now = rospy.Time.now()
 	#For PID Test
         if now > self.t_next:
+	    
             # Read the PID
             try:
                 left_pidin, right_pidin = self.arduino.get_pidin()
@@ -154,7 +156,8 @@ class BaseController:
                 return
             self.lPidoutPub.publish(left_pidout)
             self.rPidoutPub.publish(right_pidout)
-            # Read the encoders
+            
+	    # Read the encoders
             try:
                 left_enc, right_enc = self.arduino.get_encoder_counts()
             except:
@@ -241,10 +244,10 @@ class BaseController:
                 self.v_right -= self.max_accel
                 if self.v_right < self.v_des_right:
                     self.v_right = self.v_des_right
-            """
+            
             self.lVelPub.publish(self.v_left)
             self.rVelPub.publish(self.v_right)
-            """
+            
             
             # Set motor speeds in encoder ticks per PID loop
             if not self.stopped:

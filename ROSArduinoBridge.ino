@@ -118,13 +118,11 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("Left Count:");
-  Serial.println(left_enc_pos);
-  Serial.print("Right Count:");
-  Serial.println(right_enc_pos);
-  delay(1000);
+  
   while (Serial.available() > 0) {
     chr = Serial.read();
+    //Serial.println(chr);
+    //delay(200);
     if (chr == 13) {
       if (arg == 1) argv1[index] = NULL;
       else if (arg == 2) argv2[index] = NULL;
@@ -164,5 +162,10 @@ void loop() {
     setMotorSpeeds(0, 0);
     moving = 0;
   }
+  
+  /*
+  cmd = 'b';
+  runCommand();
+  */
 }
 
