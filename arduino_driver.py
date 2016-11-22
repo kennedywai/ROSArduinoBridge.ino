@@ -32,12 +32,6 @@ from serial import Serial
 SERVO_MAX = 180
 SERVO_MIN = 0
 
-"""
-When dealing with classes, you can have variables that are available everywhere (global variables), 
-variables that are only available to members of a certain class (member variables), 
-and variables that are only available to particular instances of a class (instance variables).
-"""
-
 class Arduino:
     ''' Configuration Parameters
     '''    
@@ -272,7 +266,7 @@ class Arduino:
     def get_encoder_counts(self):
         values = self.execute_array('e')
         if len(values) != 2:
-            print "Encoder count was not 2"	
+            print "Encoder count was not 2"
             raise SerialException
             return None
         else:
@@ -340,22 +334,22 @@ class Arduino:
     
     def get_pidin(self):
 	values = self.execute_array('i')
-	if len(values) != 2:
+	if len(values) != 2:#left and right encoders
 	   print "get_pidin count was not 2"
 	   raise SerialException
 	   return None
 	else:
 	   return values
-    
+
     def get_pidout(self):
 	values = self.execute_array('f')
-	if len(values) != 2:
+	if len(values) != 2: #left and right encoders
 	   print "get_pidout count was not 2"
 	   raise SerialException
 	   return None
 	else:
-	   return values  
-	 	
+	   return values
+    
 #    def get_maxez1(self, triggerPin, outputPin):
 #        ''' The maxez1 command queries a Maxbotix MaxSonar-EZ1 sonar
 #            sensor connected to the General Purpose I/O lines, triggerPin, and
@@ -372,11 +366,11 @@ class Arduino:
 """ Basic test for connectivity """
 if __name__ == "__main__":
     if os.name == "posix":
-        portName = "/dev/ttyACM0"
+        portName = "/dev/ttyUSB0"
     else:
         portName = "COM43" # Windows style COM port.
         
-    baudRate = 115200
+    baudRate = 57600
 
     myArduino = Arduino(port=portName, baudrate=baudRate, timeout=0.5)
     myArduino.connect()
@@ -388,7 +382,7 @@ if __name__ == "__main__":
     print "Reading on digital port 0", myArduino.digital_read(0)
     print "Blinking the LED 3 times"
     for i in range(3):
-        myArduino.digital_write(12, 1)
+        myArduino.digital_write(13, 1)
         time.sleep(1.0)
     #print "Current encoder counts", myArduino.encoders()
     
