@@ -1,3 +1,4 @@
+#define USE_USBCON
 #include "motor_driver.h"
 #include "commands.h";
 //Left Encoder
@@ -26,12 +27,13 @@ void initEncoders(){
 }
 
 void encoderLeftISR(){
-    /*
+    
     if(direction(LEFT) == BACKWARDS){
         left_enc_pos--;
     }else{
         left_enc_pos++;
-    }*/
+    }
+    /*
     if (digitalRead(encoderL_A) == HIGH) {
     if (digitalRead(encoderL_B) == LOW) {
       left_enc_pos++;
@@ -44,17 +46,17 @@ void encoderLeftISR(){
     } else {
       left_enc_pos++;
     }
-  }
+  }*/
 }
 
 void encoderRightISR(){
-  /*
+  
   if(direction(RIGHT) == BACKWARDS){
       right_enc_pos--;
     }else{
       right_enc_pos++;
     }
-    */
+    /*
     if (digitalRead(encoderR_A) == HIGH) {
     if (digitalRead(encoderR_B) == LOW) {
       right_enc_pos++;
@@ -68,6 +70,7 @@ void encoderRightISR(){
       right_enc_pos++;
     }
   }
+  */
 }
 
 /*

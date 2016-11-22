@@ -9,25 +9,28 @@ PID的目的是通过改变电机PWM值，使电机实际的转速基本等于�
 根据PWM值和实际的转速的运动轨迹，不停地修改PID的参数，
 让期望的转速和实际的转速能在很短时间内的达到一致。
 调节顺序，先调P,再调I，最后调D，通常只需要P和I两个参数就可以了。
+
+逐渐从0增大P值和I值，至小车能够快速响应且未开始抖动，达到理想值
 */
 typedef struct {
   double TargetTicksPerFrame;     // target speed in ticks per frame
   long   Encoder;                 // encoder count
   long   PrevEnc;                 // last encoder count
   int    PrevInput;               // last input
-  int    ITerm;                   // integrated term
+  int    ITerm;                   // integrated term for PID
   long   output;                  // last motor setting
 }SetPointInfo;
 
 SetPointInfo leftPID, rightPID;
 
-int Kp = 20;
+int Kp = 10;
 int Kd = 12;
 int Ki = 0; // PD controller
 int Ko = 50;
 
-unsigned char moving = 0; // is the base in motion?
+unsigned char moving = 0; // To check the robot base if its in motion?
 
+// Initializing PID Parameters
 void resetPID(){
    leftPID.TargetTicksPerFrame = 0.0;
    leftPID.Encoder = readEncoder(LEFT);// present encoder value
@@ -79,7 +82,6 @@ void updatePID() {
 }
 
 // Reading PID input and output
-// READ_PIDOUT 读取PID计算的PWM值，为后续调整PID参数提供参考
 // READ_PIDIN 读取一个PID周期内编码器的计数，为后续调整PID参数提供参考
 long readPidIn(int i) {
   long pidin=0;
@@ -90,7 +92,7 @@ long readPidIn(int i) {
   }
   return pidin;
 }
-
+// READ_PIDOUT 读取PID计算的PWM值，为后续调整PID参数提供参考
 long readPidOut(int i) {
   long pidout=0;
     if (i == LEFT){
