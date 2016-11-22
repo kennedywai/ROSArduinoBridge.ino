@@ -14,13 +14,11 @@ the speed of the motors using PID control. The rosserial library conveniently al
 the rest of the ros nodes in the pc via usb. The program subscribes to the cmd_vel topic which sets the desired speed of 
 the motors, and publishes the actual speeds on the rpm topic. I used two interrupt pins in the mega, one for each encoder. 
 The PID control and rpm publishing are all done in the same loop cycle, at a desired rate of 10Hz (every 100 ms). 
-I modifed the Adafruit motorshield v2 library such that setSpeed for DC motors used the full 4096 PWM resolution, 
-i.e. in Adafruit_MotorShield.cpp
 */
 const int PID_INTERVAL = 1000 / PID_RATE;
 unsigned long nextPID = PID_INTERVAL;
 
-#define AUTO_STOP_INTERVAL 2000
+#define AUTO_STOP_INTERVAL 10000 // 10sec 
 long lastMotorCommand = AUTO_STOP_INTERVAL;
 
 /* Variable initialization */
@@ -80,7 +78,9 @@ int runCommand() {
       Serial.println("OK");
       break;
     case MOTOR_SPEEDS:
-      lastMotorCommand = millis();
+      lastMotorCommand = millis(); //Returns the number of milliseconds since the 
+                                   //Arduino board began running the current program. 
+                                   //This number will overflow (go back to zero), after approximately 50 days.
       if (arg1 == 0 && arg2 == 0) {
         setMotorSpeeds(0, 0);
         moving = 0;
@@ -124,13 +124,16 @@ void loop() {
     //Serial.println(chr);
     //delay(200);
     if (chr == 13) {
-      if (arg == 1) argv1[index] = NULL;
-      else if (arg == 2) argv2[index] = NULL;
+      if (arg == 1) 
+        argv1[index] = NULL; // first argument
+      else if (arg == 2) 
+        argv2[index] = NULL;// second argument
       runCommand();
       resetCommand();
     }
     else if (chr == ' ') {
-      if (arg == 0) arg = 1;
+      if (arg == 0) 
+        arg = 1;
       else if (arg == 1)  {
         argv1[index] = NULL;
         arg = 2;
@@ -158,14 +161,9 @@ void loop() {
   }
   
   if ((millis() - lastMotorCommand) > AUTO_STOP_INTERVAL) {
-    ;
+    // Stop the robot from moving after "AUTO_STOP_INTERVAL" seconds
     setMotorSpeeds(0, 0);
     moving = 0;
   }
-  
-  /*
-  cmd = 'b';
-  runCommand();
-  */
 }
 
