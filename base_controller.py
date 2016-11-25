@@ -34,13 +34,13 @@ from tf.broadcaster import TransformBroadcaster
 class BaseController:
     def __init__(self, arduino, base_frame, name="base_controllers"):
 		
-		# Remember to declare the Int32 message data type
+	# Remember to declare the Int32 message data type
         self.lEncoderPub = rospy.Publisher('Lencoder', Int32, queue_size=5) # Light will affect encoders' values
         self.rEncoderPub = rospy.Publisher('Rencoder', Int32, queue_size=5)
-        """self.lPidoutPub = rospy.Publisher('Lpidout', Int32, queue_size=5)
+        self.lPidoutPub = rospy.Publisher('Lpidout', Int32, queue_size=5) # An 8-bit PWM values 0-255
         self.rPidoutPub = rospy.Publisher('Rpidout', Int32, queue_size=5)
         self.lVelPub = rospy.Publisher('Lvel', Int32, queue_size=5)
-        self.rVelPub = rospy.Publisher('Rvel', Int32, queue_size=5)"""
+        self.rVelPub = rospy.Publisher('Rvel', Int32, queue_size=5)
 		
         self.arduino = arduino
         self.name = name
@@ -54,7 +54,7 @@ class BaseController:
         pid_params['wheel_track'] = rospy.get_param("~wheel_track", "")
         pid_params['encoder_resolution'] = rospy.get_param("~encoder_resolution", "") 
         pid_params['gear_reduction'] = rospy.get_param("~gear_reduction", 1.0)
-        pid_params['Kp'] = rospy.get_param("~Kp", 20)
+        pid_params['Kp'] = rospy.get_param("~Kp", 10)
         pid_params['Kd'] = rospy.get_param("~Kd", 12)
         pid_params['Ki'] = rospy.get_param("~Ki", 0)
         pid_params['Ko'] = rospy.get_param("~Ko", 50)
@@ -130,16 +130,14 @@ class BaseController:
     def poll(self):
         now = rospy.Time.now()
         if now > self.t_next:
-            
             # Read the PID
             try:
                 left_pidin, right_pidin = self.arduino.get_pidin()
             except:
-                rospy.logerr("getpidin exception count: ")
+                rospy.logerr("getpidout exception count: ")
                 return                         
             self.lEncoderPub.publish(left_pidin)
             self.rEncoderPub.publish(right_pidin)
-            """
             try:
                 left_pidout, right_pidout = self.arduino.get_pidout()
             except:
@@ -147,7 +145,6 @@ class BaseController:
                 return
             self.lPidoutPub.publish(left_pidout)
             self.rPidoutPub.publish(right_pidout)
-            """
             # Read the encoders
             try:
                 left_enc, right_enc = self.arduino.get_encoder_counts()
@@ -238,8 +235,8 @@ class BaseController:
                 if self.v_right < self.v_des_right:
                     self.v_right = self.v_des_right
             
-            #self.lVelPub.publish(self.v_left)
-            #self.rVelPub.publish(self.v_right)
+            self.lVelPub.publish(self.v_left)
+            self.rVelPub.publish(self.v_right)
             
             # Set motor speeds in encoder ticks per PID loop
             if not self.stopped:

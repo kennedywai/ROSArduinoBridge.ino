@@ -79,6 +79,9 @@ void updatePID() {
   doPID(&rightPID);
   doPID(&leftPID);
   setMotorSpeeds(leftPID.output, rightPID.output);
+  Serial.print( leftPID.output);
+  Serial.print(" ");
+  Serial.println( rightPID.output); 
 }
 
 // Reading PID input and output

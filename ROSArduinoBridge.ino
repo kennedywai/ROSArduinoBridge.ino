@@ -77,6 +77,7 @@ int runCommand() {
       resetPID();
       Serial.println("OK");
       break;
+      
     case MOTOR_SPEEDS:
       lastMotorCommand = millis(); //Returns the number of milliseconds since the 
                                    //Arduino board began running the current program. 
@@ -85,11 +86,13 @@ int runCommand() {
         setMotorSpeeds(0, 0);
         moving = 0;
       }
-      else moving = 1;
+      else 
+        moving = 1;
       leftPID.TargetTicksPerFrame = arg1;
       rightPID.TargetTicksPerFrame = arg2;
       Serial.println("OK");
       break;
+      
     case UPDATE_PID:
       while ((str = strtok_r(p, ":", &p)) != '\0') {
         pid_args[i] = atoi(str);
@@ -118,7 +121,6 @@ void setup() {
 }
 
 void loop() {
-  
   while (Serial.available() > 0) {
     chr = Serial.read();
     //Serial.println(chr);

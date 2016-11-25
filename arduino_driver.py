@@ -334,7 +334,7 @@ class Arduino:
     
     def get_pidin(self):
 	values = self.execute_array('i')
-	if len(values) != 2:#left and right encoders
+	if len(values) != 2:
 	   print "get_pidin count was not 2"
 	   raise SerialException
 	   return None
@@ -343,12 +343,12 @@ class Arduino:
 
     def get_pidout(self):
 	values = self.execute_array('f')
-	if len(values) != 2: #left and right encoders
-	   print "get_pidout count was not 2"
-	   raise SerialException
-	   return None
+	if len(values) != 2:
+		print "FUCK YOU PIDOUT!"
+		raise SerialException
+		return None
 	else:
-	   return values
+		return values
     
 #    def get_maxez1(self, triggerPin, outputPin):
 #        ''' The maxez1 command queries a Maxbotix MaxSonar-EZ1 sonar
